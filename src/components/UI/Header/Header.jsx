@@ -1,5 +1,6 @@
 import { Component } from "react";
 import classes from './Header.module.css';
+import { Link } from "react-router-dom";
 
 class Header extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class Header extends Component {
     }
     render() { 
         return ( 
-            <header>
+            <header className={this.props.class}>
                 <div className={classes.logo}><a href="/">{this.props.logo}</a></div>
                 
                 {this.menu 
@@ -26,7 +27,7 @@ class Header extends Component {
                 
 
                 {this.props.lk_href
-                ? <div className={classes.lk}><a href={this.props.lk_href}>{this.props.lk_icon}</a></div>
+                ? <div className={classes.lk}><Link to={this.props.lk_href}>{this.props.lk_icon}</Link></div>
                 : null}
             </header>
         );

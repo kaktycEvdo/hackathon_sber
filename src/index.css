@@ -152,12 +152,14 @@ main{
 }
 .form_logo{
 	grid-column: 1 / 5;
-	height: 10px;
+	height: 120px;
 	display: flex;
 	align-items: start;
 }
 .form_logo img{
 	width: 80%;
+	height: 100%;
+	object-fit: cover;
 }
 
 menu{
@@ -168,6 +170,14 @@ menu{
 	height: 100%;
 	width: 15vw;
 }
+
+.sber_header{
+	justify-content: end;
+}
+.sber_header *{
+	margin-right: 20px;
+}
+
 @media screen and (max-width: 768px) {
 	.main_form{
 		display: grid;

@@ -14,7 +14,7 @@ function App() {
 		lk_icon = {<FontAwesomeIcon icon={faUser}/>}
 		/>
 		<main>
-			<Main logo = {<img src={sberLogo}/>} lk_href = {"lk/"}/>
+			<Main logo = {<img src={sberLogo}/>}/>
 		</main>
 		</>
 	)

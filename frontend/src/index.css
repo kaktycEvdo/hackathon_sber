@@ -90,7 +90,9 @@ main{
 	align-items: center;
 	gap: 20px;
 }
-
+a{
+	background-color: var(--lighter-background-color);
+}
 
 .main_form{
 	display: grid;
@@ -160,15 +162,6 @@ main{
 	width: 80%;
 	height: 100%;
 	object-fit: cover;
-}
-
-menu{
-	display: flex;
-	position: fixed;
-	right: -15vw;
-	top: 0;
-	height: 100%;
-	width: 15vw;
 }
 
 .sber_header{

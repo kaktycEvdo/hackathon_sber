@@ -1,13 +1,31 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import Index from './components/pages/Index.jsx';
-import sberLogo from './assets/sber_logo_full.svg'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import LK from './components/pages/LK.jsx';
-import Element from './components/pages/Element.jsx';
+from langchain.schema import HumanMessage, SystemMessage
+from langchain.chat_models.gigachat import GigaChat
+from starlette.middleware.cors import CORSMiddleware
 
-const data = [ [
+chat = GigaChat(credentials="OTQ5M2E3M2QtOWQ1ZS00NzE5LWE4M2UtOGZlZGIzZWUyNTQwOmE4YWYxNDhhLWQwZDctNGNiNS1iMTM4LTc3NmE3Y2UyMDE3Yg==", verify_ssl_certs=False)
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+app.add_middleware(
+CORSMiddleware,
+allow_origins=["*"], # Allows all origins
+
+allow_credentials=True,
+allow_methods=["*"], # Allows all methods
+allow_headers=["*"], # Allows all headers
+)
+
+message_id = 0
+
+messages = [
+    SystemMessage(
+        content="Ты бот-ассистент, который помогает андеррайтеру принять решение по выдаче кредита."
+    )
+]
+
+data = [ [
 	{'ФИО': 'Фамилич'+' '+'Имён'+' '+'Отчествович', 'dtype' : 'text'},
 	{'Дата рождения': '25.11.1999', 'dtype' : 'date'},
 	{'Серия № паспорта': '2555 251444', 'dtype' : 'date'},
@@ -60,44 +78,18 @@ const data = [ [
 	{'Наличие сбережений на счёте в банке': 'Нет', 'dtype' : 'text'}
 ]]
 
-const lk_data = [{
-	'ФИО': 'Фуржетов'+' '+'Антон'+' '+'Николаевич',
-	'Домен': 'somedomain@sber.org',
-	'Электронная почта': 'furget12@mail.ru',
-	'Пароль': 'fu1get2pr'
-},{
-	'ФИО': 'Жишкин'+' '+'Владимир'+' '+'Антонович',
-	'Домен': 'somedomain@sber.org',
-	'Электронная почта': 'jij0vl@mail.ru',
-	'Пароль': 'jija64vl'
-},{
-	'ФИО': 'Тужкин'+' '+'Сергей'+' '+'Михайлович',
-	'Домен': 'somedomain@sber.org',
-	'Электронная почта': 'tuj1kser@mail.ru',
-	'Пароль': 'tuji1s7t'
-}]
+@app.post("/gigachat/")
+async def post_request(*, q: str | None = None):
+    messages.append({message_id: HumanMessage(content=q)})
+    message_id+=1
+    res = chat(messages)
+    messages.pop()
 
-const router = createBrowserRouter([
-  {
-      path: "/",
-      element: <Index logo = {<img src={sberLogo}/>} data = {data}/>,
-      children:[
-        {
-            path: "lk",
-            element: <LK lk_data={lk_data}/>
-        },
-        {
-            path: "auth",
-            element: <></>
-        },
-        {
-            path: ":formID",
-            element: <Element logo = {<img src={sberLogo}/>}/>
-        }
-    ]
-  }
-]);
+    return res
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router}/>
-)
+@app.get("/")
+async def get_data(q: int | None = None):
+    if q:
+        return {"responce": data[q]}
+    else:
+        return {"responce": data}

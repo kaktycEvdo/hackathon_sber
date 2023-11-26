@@ -17,7 +17,7 @@ class Header extends Component {
     render() { 
         return ( 
             <header className={this.props.class}>
-                <div className={classes.logo}><a href="/">{this.props.logo}</a></div>
+                <div className={classes.logo}><Link to="/">{this.props.logo}</Link></div>
                 
                 {this.menu 
                 ? <ul className={classes.menu} >
@@ -29,6 +29,8 @@ class Header extends Component {
                 {this.props.lk_href
                 ? <div className={classes.lk}><Link to={this.props.lk_href}>{this.props.lk_icon}</Link></div>
                 : null}
+
+                {this.props.children}
             </header>
         );
     }
